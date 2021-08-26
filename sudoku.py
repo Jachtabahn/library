@@ -66,6 +66,11 @@ for quadrant in quadranten:
           model.AddBoolOr([position(zahl, zeile_1, spalte_1).Not(), position(zahl, zeile_2, spalte_2).Not()])
 
 print(vorgaben)
+for zeile in zeilen:
+  for spalte in spalten:
+    zahl = vorgaben[zeile - 1][spalte - 1]
+    if zahl > 0:
+      model.AddBoolOr([position(zeile, spalte, zahl)])
 
 # Berechnung des Plans.
 solver = ortools.sat.python.cp_model.CpSolver()
