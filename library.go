@@ -2,6 +2,7 @@ package main
 
 import (
   "fmt"
+  "html/template"
   "io"
   "log"
   "net/http"
@@ -57,9 +58,17 @@ func main() {
         fmt.Println(err)
       }
 
-      http.ServeFile(w, r, "sudoku.html")
+      // Write a representation final state into the HTML file
+      // before the HTML file sending to the browser.
+      htmlFile, err := template.ParseFiles("sudoku.html")
+      if err != nil {
+          fmt.Println(err)
+      }
+      err = htmlFile.Execute(w, string(endzustand))
+      if err != nil {
+          fmt.Println(err)
+      }
     })
 
     log.Fatal(http.ListenAndServe(":8000", nil))
-
 }
