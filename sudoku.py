@@ -21,24 +21,24 @@ vorgaben = [
 
 # Definition der Entscheidungsmöglichkeiten.
 entscheidungsvariablen = {}
-for zahl in zahlen:
-  for zeile in zeilen:
-    for spalte in spalten:
-      if zahl not in entscheidungsvariablen:
-        entscheidungsvariablen[zahl] = {}
-      if zeile not in entscheidungsvariablen[zahl]:
-        entscheidungsvariablen[zahl][zeile] = {}
-      entscheidungsvariablen[zahl][zeile][spalte] = model.NewBoolVar(
-        "Zahl {} ist in Zeile {} und Spalte {}.".format(zahl, zeile, spalte))
-def position(zahl, zeile, spalte):
-  return entscheidungsvariablen[zahl][zeile][spalte]
+for zeile in zeilen:
+  for spalte in spalten:
+    for zahl in zahlen:
+      if zeile not in entscheidungsvariablen:
+        entscheidungsvariablen[zeile] = {}
+      if spalte not in entscheidungsvariablen[zeile]:
+        entscheidungsvariablen[zeile][spalte] = {}
+      entscheidungsvariablen[zeile][spalte][zahl] = model.NewBoolVar(
+        "Zeile {} und Spalte {} enthalten Zahl {}.".format(zeile, spalte, zahl))
+def position(zeile, spalte, zahl):
+  return entscheidungsvariablen[zeile][spalte][zahl]
 
 # Auf jeder Position steht eine Zahl.
 for zeile in zeilen:
   for spalte in spalten:
     eine_zahl_kommt_in_dieser_position_vor = []
     for zahl in zahlen:
-      eine_zahl_kommt_in_dieser_position_vor.append(position(zahl, zeile, spalte))
+      eine_zahl_kommt_in_dieser_position_vor.append(position(zeile, spalte, zahl))
     model.AddBoolOr(eine_zahl_kommt_in_dieser_position_vor)
 
 # In keiner Zeile gibt es eine Wiederholung.
@@ -47,7 +47,7 @@ for zeile in zeilen:
     for spalte_1 in spalten:
       for spalte_2 in spalten:
         if spalte_1 != spalte_2:
-          model.AddBoolOr([position(zahl, zeile, spalte_1).Not(), position(zahl, zeile, spalte_2).Not()])
+          model.AddBoolOr([position(zeile, spalte_1, zahl).Not(), position(zeile, spalte_2, zahl).Not()])
 
 # In keiner Spalte gibt es eine Wiederholung.
 for spalte in spalten:
@@ -55,7 +55,7 @@ for spalte in spalten:
     for zeile_1 in zeilen:
       for zeile_2 in zeilen:
         if zeile_1 != zeile_2:
-          model.AddBoolOr([position(zahl, zeile_1, spalte).Not(), position(zahl, zeile_2, spalte).Not()])
+          model.AddBoolOr([position(zeile_1, spalte, zahl).Not(), position(zeile_2, spalte, zahl).Not()])
 
 # In keinem Quadranten gibt es eine Wiederholung.
 for quadrant in quadranten:
@@ -63,9 +63,8 @@ for quadrant in quadranten:
     for (zeile_1, spalte_1) in quadrant:
       for (zeile_2, spalte_2) in quadrant:
         if (zeile_1, spalte_1) != (zeile_2, spalte_2):
-          model.AddBoolOr([position(zahl, zeile_1, spalte_1).Not(), position(zahl, zeile_2, spalte_2).Not()])
+          model.AddBoolOr([position(zeile_1, spalte_1, zahl).Not(), position(zeile_2, spalte_2, zahl).Not()])
 
-print(vorgaben)
 for zeile in zeilen:
   for spalte in spalten:
     zahl = vorgaben[zeile - 1][spalte - 1]
