@@ -1,10 +1,10 @@
 package main
 
 import (
-  "log"
-  "net/http"
   "fmt"
   "io"
+  "log"
+  "net/http"
   "os/exec"
 )
 
