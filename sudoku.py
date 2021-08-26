@@ -1,4 +1,6 @@
+import json
 import ortools.sat.python.cp_model
+import sys
 
 model = ortools.sat.python.cp_model.CpModel()
 
@@ -8,16 +10,7 @@ zeilen = list(range(1, 10))
 spalten = list(range(1, 10))
 quadranten = [[(zeile, spalte) for zeile in zeilen[i:i + 3] for spalte in spalten[j:j + 3]] for j in [0, 3, 6] for i in [0, 3, 6]]
 
-vorgaben = [
-  [0, 7, 0, 0, 0, 0, 0, 9, 0],
-  [0, 4, 1, 6, 9, 2, 0, 8, 7],
-  [0, 9, 0, 0, 0, 5, 0, 0, 0],
-  [0, 6, 0, 2, 8, 1, 0, 7, 0],
-  [0, 2, 7, 5, 4, 9, 0, 1, 6],
-  [1, 5, 0, 3, 6, 7, 0, 0, 2],
-  [0, 0, 0, 1, 0, 6, 7, 3, 9],
-  [0, 1, 0, 0, 0, 0, 0, 0, 0],
-  [7, 3, 6, 9, 2, 4, 1, 5, 8]]
+vorgaben = json.load(sys.stdin)
 
 # Definition der Entscheidungsmöglichkeiten.
 entscheidungsvariablen = {}
@@ -68,7 +61,7 @@ for quadrant in quadranten:
 for zeile in zeilen:
   for spalte in spalten:
     zahl = vorgaben[zeile - 1][spalte - 1]
-    if zahl > 0:
+    if zahl != 0:
       model.AddBoolOr([position(zeile, spalte, zahl)])
 
 # Berechnung des Plans.
@@ -77,9 +70,7 @@ status = solver.Solve(model)
 
 # Visualisierung des Plans.
 if status != ortools.sat.python.cp_model.OPTIMAL:
-  print("Es gibt keine Lösung zum Sudoku:")
-  for zeile in zeilen:
-    print(vorgaben[zeile - 1])
+  print("Es gibt kein Sudokubrett zu den Vorgaben.")
 else:
   endzustand = [[0 for spalte in spalten] for zeile in zeilen]
   for zeile in zeilen:
