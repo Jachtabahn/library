@@ -77,11 +77,16 @@ solver = ortools.sat.python.cp_model.CpSolver()
 status = solver.Solve(model)
 
 # Visualisierung des Plans.
-print("Status: {}.".format(status))
-if status == ortools.sat.python.cp_model.OPTIMAL:
-  for zahl in zahlen:
-    for zeile in zeilen:
-      for spalte in spalten:
-        variable = position(zahl, zeile, spalte)
-        entscheidung = bool(solver.Value(variable))
-        print("{} {}.".format(variable, entscheidung))
+if status != ortools.sat.python.cp_model.OPTIMAL:
+  print("Es gibt keine Lösung zum Sudoku:")
+  for zeile in zeilen:
+    print(vorgaben[zeile - 1])
+else:
+  endzustand = [[0 for spalte in spalten] for zeile in zeilen]
+  for zeile in zeilen:
+    for spalte in spalten:
+      for zahl in zahlen:
+        if solver.Value(position(zeile, spalte, zahl)):
+          endzustand[zeile - 1][spalte - 1] = zahl
+  for zeile in zeilen:
+    print(endzustand[zeile - 1])
