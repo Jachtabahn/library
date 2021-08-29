@@ -7,3 +7,22 @@ python -m pip install --upgrade --user ortools
 git clone https://github.com/Jachtabahn/library.git
 snap install go --classic
 ```
+
+# Digital Ocean Droplet für die Library konfigurieren
+```sh
+ssh ocean
+scp sudoku.py sudoku.html sat.html library.go ocean:
+/opt/ibm/ILOG/CPLEX_Studio_Community201/opl/bin/x86-64_linux/oplrun -d sudoku.cpo sudoku.mod
+
+apt install openjdk-16-jre-headless
+curl 'https://public.boxcloud.com/d/1/b1!6vdbInMug54--gDRxkwSz85WIlNHYoNtLyz67mwyTSHRiLcky70zxs9o_geUw8VxjoUjaGOkoLE37YXbshe7HmzGi67IihpGv_F3KX5lB1HGQK0gsJnqxGKhrqjnUQ0yyG1lezD2DyEZrDpc3JELyIj8AIXnoP8oACQvN0p-mMg_Qboul98QrJQr22zbMafeM7S3hJ7zlF3vVVcIz1N6rFilCqFnReL9YH9ct45wrcA-h42x68zISnw7hww1238qBYgxi30kyinX7mCNypfRtD55dr4QF4ZwT2hHSkKT8m_8c3UbMHcHlIPbI9z-fktZ1c4PdCUReWk2K_mjikK2wQcpZWgKDh_PvqxiEPKi7Y19BkgIsMYgHzpxyTWEhqBVatir2g4yi8jALUiQRFg_yRjXbpA7oS4hcJiU5d3eRqDuw2u31yvei6l69hJX73ZI3ZRHn476_aLvbGVhPKgNslWx2e7velO_Xme8nFQmdVqMJnYyjmS5CzJd2Jruwj-yo3bbaz_Shjbx_hAmO4Z1gYWc3vMejD--N-NTHvPfzaFSSDKVNcKjGsVuOtIlsnrE6aemflWP7JGqZ7vPsLC_6x-XOLWnX-l1t4BtaNB5V-3-MUNURxEcctgPkrnx80zHGc76NZWvDDPfCD9aIqLwsUCxWzN9X7o0nU6nz5LYR6wIEVOzejqbyAT0bRb7_dHqQGvl7cl9vVgIyfY4gaHNm0cuAn1DDk2dZo1ldZR_zysPqw4umGHFklJQi6qVr-nArsxT2azbjStJXrkzIBt1Er69oK0TzSzlOXw_kRjWH5T_HVnUx4a9nAcG1zT-oCRl9V59Cqq-JwWrfDoAY9nZWTfUNu194QQCatCzKpA4Sq9SC-Wv-S_cdKE7_nzUwvaP4gcPCj3g_XxRkHjK6E1pbanIYfRkJk7oL3Prp77PVVRGh1v56NuO4hrPhQ5YrKEpF9Y5y7WNDaLSCwq4JxO0RbBJ4vIWRBynm2TZvp6TjSzbjzZG0DFmXQzFuggK-kiA2VgvKEcN0u-JqKwLxIvuvIdbkzgsp8-R6qRKkWzUPBpBaVC-gKbTkfYgn4g4mMqDU2LtyzTJlMaH7DdSxbvPVk8qYptwBGY34TMKO7KKJaJh8A9fG30K2U0kuuKiEYFgHQliag5YGQYhhpzcOcG3wI0B6O6ggtyWJ1eicuw44IGnYUSbySkpTFBd40-z2OsLCuMATeax_bhzerWi2GkeGVTK94MGr3yRbrV3L0MO6UaJvTs1-nlhXEexQU_vi1v89Ds3DOlVbXn-7vJZ1aVT44qpXCrjRKZVpbYsZZ1TUqjTlROxpWKnCOC5zHlV__Y1YYESOsSZGtKgmeHAJY19YFyulB8usutRrNM7kOzgwKbb-V9sRP1IVf0AFXB93fJduNGu4BIC-eCE/download' > COS.sh # Link neu generieren, indem Du mit dem Browser auf https://ibm.ent.box.com/s/rsiksgbyhcxjnindzq39sfdhhrrj7l11 gehst.
+bash COS.sh
+apt install fish
+snap install go --classic
+curl https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh > Anaconda.sh
+bash Anaconda.sh
+pip install ortools
+
+curl https://checkip.amazonaws.com
+go run library.go
+```
