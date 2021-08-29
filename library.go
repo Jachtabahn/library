@@ -72,11 +72,75 @@ func main() {
 
     http.HandleFunc("/sat.html", func(w http.ResponseWriter, r *http.Request) {
 
+      // Kompiliere eine .mod Datei mit allgemeinem Problem
+      // in eine .cpo Datei mit konkretem Problem.
+      command := exec.Command(
+        "/opt/ibm/ILOG/CPLEX_Studio_Community201/opl/bin/x86-64_linux/oplrun",
+        "-d",
+        "sudoku.cpo",
+        "sudoku.mod")
+
+      stderr, err := command.StderrPipe()
+      if err != nil {
+        fmt.Println(err)
+      }
+
+      stdout, err := command.StdoutPipe()
+      if err != nil {
+        fmt.Println(err)
+      }
+
+      if err := command.Start(); err != nil {
+        fmt.Println(err)
+      }
+
+      slurp, _ := io.ReadAll(stderr)
+      fmt.Printf("%s", slurp)
+
+      endzustand, _ := io.ReadAll(stdout)
+      fmt.Printf("%s", endzustand)
+
+      if err := command.Wait(); err != nil {
+        fmt.Println(err)
+      }
+
+      // Finde eine erfüllende Belegung für das konkrete Problem in der .cpo Datei.
+      command = exec.Command(
+        "/opt/ibm/ILOG/CPLEX_Studio_Community201/cpoptimizer/bin/x86-64_linux/cpoptimizer",
+        "-c",
+        "read sudoku.cpo",
+        "optimize",
+        "display solution")
+
+      stderr, err = command.StderrPipe()
+      if err != nil {
+        fmt.Println(err)
+      }
+
+      stdout, err = command.StdoutPipe()
+      if err != nil {
+        fmt.Println(err)
+      }
+
+      if err := command.Start(); err != nil {
+        fmt.Println(err)
+      }
+
+      slurp, _ = io.ReadAll(stderr)
+      fmt.Printf("%s", slurp)
+
+      endzustand, _ = io.ReadAll(stdout)
+      fmt.Printf("%s", endzustand)
+
+      if err := command.Wait(); err != nil {
+        fmt.Println(err)
+      }
+
       htmlFile, err := template.ParseFiles("sat.html")
       if err != nil {
           fmt.Println(err)
       }
-      err = htmlFile.Execute(w, "OPL SOLUTION")
+      err = htmlFile.Execute(w, string(endzustand))
       if err != nil {
           fmt.Println(err)
       }
