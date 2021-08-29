@@ -11,7 +11,7 @@ import (
 
 func main() {
 
-    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+    http.HandleFunc("/sudoku.html", func(w http.ResponseWriter, r *http.Request) {
 
       query := r.URL.Query()
       vorgabenListe := query["sudoku_vorgaben"]
@@ -65,6 +65,18 @@ func main() {
           fmt.Println(err)
       }
       err = htmlFile.Execute(w, string(endzustand))
+      if err != nil {
+          fmt.Println(err)
+      }
+    })
+
+    http.HandleFunc("/sat.html", func(w http.ResponseWriter, r *http.Request) {
+
+      htmlFile, err := template.ParseFiles("sat.html")
+      if err != nil {
+          fmt.Println(err)
+      }
+      err = htmlFile.Execute(w, "OPL SOLUTION")
       if err != nil {
           fmt.Println(err)
       }
